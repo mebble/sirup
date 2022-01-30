@@ -1,5 +1,7 @@
+import json
 import nav
 import git
+from shell import get_arg
 
 def summarise(repos_dir):
     repos = []
@@ -13,7 +15,14 @@ def summarise(repos_dir):
         repos.append(git_info)
     return repos
 
-if __name__ == '__main__':
-    summary = summarise('..')
-    print(summary)
+usage_instructions = 'Usage: python3 main.py --repos ./path/to/repos'
 
+if __name__ == '__main__':
+    repos_path, exists = get_arg('--repos')
+    if not exists:
+        print(usage_instructions)
+        exit(1)
+
+    summary = summarise(repos_path)
+    json_output = json.dumps(summary)
+    print(json_output)
