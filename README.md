@@ -14,19 +14,35 @@ Summarise a directory of git repos. Regenerate them from the summary.
 
 # Usage
 
-Basic usage:
+Basic:
 
 ```bash
 ./sirup --repos ./path/to/repos
 ```
 
-Usage with `jq`:
+With `jq`:
 
 ```bash
 ./sirup --repos ./path/to/repos | jq
 ```
 
-Sample output when used with `jq`:
+## Example usage
+
+Directory structure:
+
+```
+`-- projects
+    |-- birdwatch
+    `-- burl
+```
+
+Command:
+
+```bash
+./sirup --repos ./projects | jq
+```
+
+Output:
 
 ```json
 [
