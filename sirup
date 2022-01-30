@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import json
 import nav
 import git
@@ -15,7 +17,7 @@ def summarise(repos_dir):
         repos.append(git_info)
     return repos
 
-usage_instructions = 'Usage: python3 main.py --repos ./path/to/repos'
+usage_instructions = 'Usage: ./sirup --repos ./path/to/repos'
 
 if __name__ == '__main__':
     repos_path, exists = get_arg('--repos')
