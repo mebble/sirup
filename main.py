@@ -1,3 +1,3 @@
 import git
 
-print(git.is_clean())
+print(git.get_remotes())
