@@ -1,3 +1,6 @@
+import nav
 import git
 
-print(git.get_remotes())
+for repo in nav.explore_repos('..'):
+    print(repo)
+    print(git.is_clean())
