@@ -4,7 +4,8 @@ from shell import run
 
 def explore_repos(repos_dir):
     repos_dir = _abs_path(repos_dir)
-    repos = run(f'ls {repos_dir}').strip().split()
+    repos, _ = run(f'ls {repos_dir}')
+    repos = repos.strip().split()
     for repo in repos:
         _chdir(path.join(repos_dir, repo))
         yield repo
