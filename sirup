@@ -3,7 +3,7 @@
 import json
 import nav
 import git
-from shell import get_arg
+from shell import get_cmd
 
 def summarise(repos_dir):
     repos = []
@@ -17,14 +17,21 @@ def summarise(repos_dir):
         repos.append(git_info)
     return repos
 
-usage_instructions = 'Usage: ./sirup --repos ./path/to/repos'
+usage_instructions = '''
+    Usage: ./sirup sum --repos ./path/to/repos
+'''.strip()
 
 if __name__ == '__main__':
-    repos_path, exists = get_arg('--repos')
-    if not exists:
+    cmd, success = get_cmd()
+    if not success:
         print(usage_instructions)
         exit(1)
 
-    summary = summarise(repos_path)
-    json_output = json.dumps(summary)
-    print(json_output)
+    if cmd['name'] == 'sum':
+        repos_path = cmd['args']['--repos']
+        summary = summarise(repos_path)
+        json_output = json.dumps(summary)
+        print(json_output)
+        exit(0)
+
+    print('This command is not yet implemented')

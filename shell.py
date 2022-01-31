@@ -1,6 +1,15 @@
 import subprocess
 import sys
 
+cmds = {
+    'sum': {
+        'args': ['--repos']
+    },
+    'gen': {
+        'args': ['--from', '--to']
+    }
+}
+
 def run(cmd: str) -> str:
     cmd_list = cmd.split(' ')
     completed = subprocess.run(cmd_list, text=True, capture_output=True)
@@ -20,3 +29,24 @@ def get_arg(arg_key):
         return '', False
 
     return sys.argv[val_index], True
+
+def get_cmd():
+    try:
+        cmd = sys.argv[1]
+    except IndexError:
+        return None, False
+
+    if cmd not in cmds:
+        return None, False
+
+    args = {}
+    for arg_key in cmds[cmd]['args']:
+        arg_val, exists = get_arg(arg_key)
+        if not exists:
+            return None, False
+        args[arg_key] = arg_val
+
+    return {
+        'name': cmd,
+        'args': args
+    }, True

@@ -17,13 +17,13 @@ Summarise a directory of git repos. Regenerate them from the summary.
 Basic:
 
 ```bash
-./sirup --repos ./path/to/repos
+./sirup sum --repos ./path/to/repos
 ```
 
 With `jq`:
 
 ```bash
-./sirup --repos ./path/to/repos | jq
+./sirup sum --repos ./path/to/repos | jq
 ```
 
 ## Example usage
@@ -39,7 +39,7 @@ Directory structure:
 Command:
 
 ```bash
-./sirup --repos ./projects | jq
+./sirup sum --repos ./projects | jq
 ```
 
 Output:
