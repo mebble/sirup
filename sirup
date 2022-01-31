@@ -17,6 +17,9 @@ def summarise(repos_dir):
         repos.append(git_info)
     return repos
 
+def generate(json_path, output_path):
+    pass
+
 usage_instructions = '''
     Usage: ./sirup sum --repos ./path/to/repos
 '''.strip()
@@ -32,6 +35,15 @@ if __name__ == '__main__':
         summary = summarise(repos_path)
         json_output = json.dumps(summary)
         print(json_output)
+        exit(0)
+
+    if cmd['name'] == 'gen':
+        json_path = cmd['args']['--from']
+        output_path = cmd['args']['--to']
+        success, err_message = generate(json_path, output_path)
+        if not success:
+            print(err_message)
+            exit(1)
         exit(0)
 
     print('This command is not yet implemented')
