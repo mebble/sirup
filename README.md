@@ -2,17 +2,17 @@
 
 Summarise a directory of git repos. Regenerate them from the summary.
 
-# Requirements
+## Requirements
 
 - Python 3 at `/usr/bin/python3`
 - Git 2.22 or above
 
-# Installation
+## Installation
 
 1. Clone this repo
 2. `cd` into the repo and run `chmod +x ./sirup`
 
-# Usage
+## Usage
 
 Basic:
 
@@ -26,7 +26,7 @@ With `jq`:
 ./sirup sum --repos ./path/to/repos | jq
 ```
 
-## Example usage
+### Example usage
 
 Directory structure:
 
