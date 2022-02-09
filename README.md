@@ -20,6 +20,12 @@ Basic:
 ./sirup sum --repos ./path/to/repos
 ```
 
+With logs:
+
+```bash
+./sirup sum --repos ./path/to/repos --log
+```
+
 With `jq`:
 
 ```bash

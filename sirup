@@ -5,9 +5,11 @@ import nav
 import git
 from shell import get_cmd
 
-def summarise(repos_dir):
+def summarise(repos_dir, should_log=False):
     repos = []
     for repo in nav.explore_repos(repos_dir):
+        if should_log:
+            print(f'Checking repo: {repo}')
         git_info = {
             'name': repo,
             'is_clean': git.is_clean(),
@@ -24,7 +26,9 @@ def generate(json_path, output_path):
     pass
 
 usage_instructions = '''
-    Usage: ./sirup sum --repos ./path/to/repos
+Usage: ./sirup sum --repos ./path/to/repos
+Flags:
+    --log\tWill output logs to stdout
 '''.strip()
 
 if __name__ == '__main__':
@@ -35,7 +39,8 @@ if __name__ == '__main__':
 
     if cmd['name'] == 'sum':
         repos_path = cmd['args']['--repos']
-        summary = summarise(repos_path)
+        should_log = cmd['flags']['--log']
+        summary = summarise(repos_path, should_log)
         json_output = json.dumps(summary)
         print(json_output)
         exit(0)

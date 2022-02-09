@@ -3,7 +3,8 @@ import sys
 
 cmds = {
     'sum': {
-        'args': ['--repos']
+        'args': ['--repos'],
+        'flags': ['--log']
     },
     'gen': {
         'args': ['--from', '--to']
@@ -30,6 +31,13 @@ def get_arg(arg_key):
 
     return sys.argv[val_index], True
 
+def get_flag(flag):
+    try:
+        sys.argv.index(flag)
+        return True
+    except ValueError:
+        return False
+
 def get_cmd():
     try:
         cmd = sys.argv[1]
@@ -46,7 +54,13 @@ def get_cmd():
             return None, False
         args[arg_key] = arg_val
 
+    flags = {}
+    for flag in cmds[cmd]['flags']:
+        exists = get_flag(flag)
+        flags[flag] = exists
+
     return {
         'name': cmd,
-        'args': args
+        'args': args,
+        'flags': flags
     }, True
