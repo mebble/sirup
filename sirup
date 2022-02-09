@@ -11,7 +11,10 @@ def summarise(repos_dir):
         git_info = {
             'name': repo,
             'is_clean': git.is_clean(),
-            'current_branch': git.get_branch(),
+            'current_branch': {
+                'local_branch': git.get_local_branch(),
+                **git.remote_branch_status()
+            },
             'remotes': git.get_remotes()
         }
         repos.append(git_info)

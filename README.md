@@ -49,7 +49,11 @@ Output:
   {
     "name": "birdwatch",
     "is_clean": true,
-    "current_branch": "master",
+    "current_branch": {
+      "local_branch": "master",
+      "remote_branch": "origin/master",
+      "synced": true
+    },
     "remotes": {
       "origin": {
         "fetch": "git@github.com:mebble/birdwatch.git",
@@ -60,7 +64,11 @@ Output:
   {
     "name": "burl",
     "is_clean": true,
-    "current_branch": "main",
+    "current_branch": {
+      "local_branch": "main",
+      "remote_branch": "origin/main",
+      "synced": false
+    },
     "remotes": {
       "origin": {
         "fetch": "git@github.com:mebble/burl.git",

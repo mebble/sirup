@@ -6,7 +6,21 @@ def is_clean() -> bool:
         return None
     return 'nothing to commit, working tree clean' in output
 
-def get_branch() -> str:
+def remote_branch_status():
+    output, code = run('git status -sb')
+    if _failed(code):
+        return None
+    
+    branch_pair = output.split()[1]
+    remote_branch = branch_pair[branch_pair.find('...')+3:]
+
+    is_synced = 'ahead' not in output
+    return {
+        'remote_branch': remote_branch,
+        'synced': is_synced
+    }
+
+def get_local_branch() -> str:
     output, code = run('git branch --show-current')
     if _failed(code):
         return None
