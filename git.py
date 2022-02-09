@@ -9,8 +9,8 @@ def is_clean() -> bool:
 def remote_branch_status():
     output, code = run('git status -sb')
     if _failed(code):
-        return None
-    
+        return {}
+
     branch_pair = output.split()[1]
     remote_branch = branch_pair[branch_pair.find('...')+3:]
 
