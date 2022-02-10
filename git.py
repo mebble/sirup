@@ -6,6 +6,22 @@ def is_clean() -> bool:
         return None
     return 'nothing to commit, working tree clean' in output
 
+def get_repo_size():
+    _, code1 = run('git gc')
+    output, code2 = run('git count-objects -vH')
+    if _failed(code1) or _failed(code2):
+        return {}
+
+    output_list = output.split()
+    key_index = output_list.index('size-pack:')
+    val_index = key_index + 1
+    unit_index = val_index + 1
+
+    return {
+        'value': output_list[val_index],
+        'unit': output_list[unit_index]
+    }
+
 def remote_branch_status():
     output, code = run('git status -sb')
     if _failed(code):

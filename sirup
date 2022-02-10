@@ -17,7 +17,8 @@ def summarise(repos_dir, should_log=False):
                 'local_branch': git.get_local_branch(),
                 **git.remote_branch_status()
             },
-            'remotes': git.get_remotes()
+            'remotes': git.get_remotes(),
+            'size': git.get_repo_size()
         }
         repos.append(git_info)
     return repos

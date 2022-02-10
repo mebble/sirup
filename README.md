@@ -65,6 +65,10 @@ Output:
         "fetch": "git@github.com:mebble/birdwatch.git",
         "push": "git@github.com:mebble/birdwatch.git"
       }
+    },
+    "size": {
+      "value": "11.76",
+      "unit": "KiB"
     }
   },
   {
@@ -80,6 +84,10 @@ Output:
         "fetch": "git@github.com:mebble/burl.git",
         "push": "git@github.com:mebble/burl.git"
       }
+    },
+    "size": {
+      "value": "10.90",
+      "unit": "KiB"
     }
   }
 ]
