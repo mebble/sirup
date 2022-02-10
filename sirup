@@ -13,10 +13,7 @@ def summarise(repos_dir, should_log=False):
         git_info = {
             'name': repo,
             'is_clean': git.is_clean(),
-            'current_branch': {
-                'local_branch': git.get_local_branch(),
-                **git.remote_branch_status()
-            },
+            'current_branch': git.get_current_branch(),
             'remotes': git.get_remotes(),
             'size': git.get_repo_size()
         }

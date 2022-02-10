@@ -22,28 +22,26 @@ def get_repo_size():
         'unit': output_list[unit_index]
     }
 
-def remote_branch_status():
+def get_current_branch():
     output, code = run('git status -sb')
     if _failed(code):
-        return {}
+        return None
 
     branch_pair = output.split()[1]
     pair_split_index = branch_pair.find('...')
     if pair_split_index == -1:
-        return {}
+        return {
+            'local_branch': branch_pair
+        }
 
+    local_branch = branch_pair[:pair_split_index]
     remote_branch = branch_pair[pair_split_index+3:]
     is_synced = 'ahead' not in output
     return {
+        'local_branch': local_branch,
         'remote_branch': remote_branch,
         'synced': is_synced
     }
-
-def get_local_branch() -> str:
-    output, code = run('git branch --show-current')
-    if _failed(code):
-        return None
-    return output.strip()
 
 def get_remotes():
     output, code = run('git remote -v')
