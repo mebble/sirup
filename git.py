@@ -36,7 +36,7 @@ def get_current_branch():
 
     local_branch = branch_pair[:pair_split_index]
     remote_branch = branch_pair[pair_split_index+3:]
-    is_synced = 'ahead' not in output
+    is_synced = 'ahead' not in output and 'behind' not in output
     return {
         'local_branch': local_branch,
         'remote_branch': remote_branch,
