@@ -12,8 +12,11 @@ def remote_branch_status():
         return {}
 
     branch_pair = output.split()[1]
-    remote_branch = branch_pair[branch_pair.find('...')+3:]
+    pair_split_index = branch_pair.find('...')
+    if pair_split_index == -1:
+        return {}
 
+    remote_branch = branch_pair[pair_split_index+3:]
     is_synced = 'ahead' not in output
     return {
         'remote_branch': remote_branch,
