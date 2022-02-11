@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import json
-from shell import get_cmd
+from shell import get_cmd, exit
 from app import summarise, generate
 
 usage_instructions = '''

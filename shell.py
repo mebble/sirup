@@ -69,3 +69,6 @@ def get_cmd():
         'args': args,
         'flags': flags
     }, True
+
+def exit(code):
+    sys.exit(code)
