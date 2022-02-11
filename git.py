@@ -10,7 +10,7 @@ def get_repo_size():
     _, code1 = run('git gc')
     output, code2 = run('git count-objects -vH')
     if _failed(code1) or _failed(code2):
-        return {}
+        return None
 
     output_list = output.split()
     key_index = output_list.index('size-pack:')
