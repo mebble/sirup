@@ -17,16 +17,16 @@ Summarise a directory of git repos. Regenerate them from the summary.
 ```
 Usage: ./sirup <sub-command> <args> <flags>
 <sub-command>:
-    help                       \tPrint these usage instructions
-    sum                        \tSummarise git repos and print the summary in JSON to stdout
+    help                       	Print these usage instructions
+    sum                        	Summarise git repos and print the summary in JSON to stdout
         <args>:
-            --repos ./repos/dir\tThe directory containing the git repos
+            --repos ./repos/dir	The directory containing the git repos
         <flags>:
-            --log [optional]   \tWill output logs to stdout
-    gen                        \tGenerate git repos from a summary file
+            --log   [optional] 	Will output logs to stdout
+    gen                        	Generate git repos from a summary file
         <args>:
-            --from ./sum/file  \tPath to the summary file
-            --to ./dest/dir    \tThe destination directory where you want to clone the repos
+            --from  ./sum/file 	Path to the summary file
+            --to    ./dest/dir 	The destination directory where you want to clone the repos
 ```
 
 Print the above usage instructions by running:
