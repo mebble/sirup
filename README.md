@@ -6,6 +6,7 @@ Summarise a directory of git repos. Regenerate them from the summary.
 
 - Python 3 at `/usr/bin/python3`
 - Git 2.22 or above
+- [`jq`](https://stedolan.github.io/jq/) (optional)
 
 ## Installation
 
@@ -13,6 +14,14 @@ Summarise a directory of git repos. Regenerate them from the summary.
 2. `cd` into the repo and run `chmod +x ./sirup`
 
 ## Usage
+
+Print the usage instructions by running:
+
+```
+./sirup help
+```
+
+Output:
 
 ```
 Usage: ./sirup <sub-command> <args> <flags>
@@ -27,12 +36,6 @@ Usage: ./sirup <sub-command> <args> <flags>
         <args>:
             --from  ./sum/file 	Path to the summary file
             --to    ./dest/dir 	The destination directory where you want to clone the repos
-```
-
-Print the above usage instructions by running:
-
-```
-./sirup help
 ```
 
 ## Examples
@@ -59,13 +62,13 @@ With logs:
 ./sirup sum --repos ./projects --log
 ```
 
-With `jq`:
+Piped to `jq` (don't use any flags so that only JSON gets piped to `jq`):
 
 ```bash
 ./sirup sum --repos ./projects | jq
 ```
 
-Output when used with `jq`:
+Output when piped to `jq`:
 
 ```json
 [
@@ -115,7 +118,7 @@ Output when used with `jq`:
 Assuming you had executed:
 
 ```
-./sirup sum --repos ./projects | jq > repos.json
+./sirup sum --repos ./projects > repos.json
 ```
 
 Basic usage:
