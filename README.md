@@ -37,8 +37,6 @@ Print the above usage instructions by running:
 
 ## Examples
 
-### sirup sum
-
 Assuming you have this directory structure:
 
 ```
@@ -46,6 +44,8 @@ Assuming you have this directory structure:
     |-- birdwatch
     `-- burl
 ```
+
+### sirup sum
 
 Basic usage:
 
@@ -122,4 +122,14 @@ Basic usage:
 
 ```bash
 ./sirup gen --from repos.json --to output-dir
+```
+
+Output:
+
+```
+Cloning repositories to output-dir
+[1/2] Cloning repo: birdwatch
+Done
+[2/2] Cloning repo: burl
+Done
 ```

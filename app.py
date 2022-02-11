@@ -19,9 +19,11 @@ def summarise(repos_dir, should_log=False):
 
 def generate(repos, dest_path):
     nav.goto_dest_dir(dest_path)
+    print(f'Cloning repositories to {dest_path}')
+    num_repos = len(repos)
 
     failed_clones = []
-    for repo in repos:
+    for i, repo in enumerate(repos, start=1):
         name = repo['name']
         remotes = repo['remotes']
         try:
@@ -29,9 +31,14 @@ def generate(repos, dest_path):
         except KeyError:
             remote = remotes[list(remotes)[0]]
         fetch_url = remote['fetch']
+
+        print(f'[{i}/{num_repos}] Cloning repo: {name}')
         success = git.clone_repo(name, fetch_url)
         if not success:
             failed_clones.append(repo)
+            print(f'Failed')
+        else:
+            print(f'Done')
 
     if not failed_clones:
         return True, []
