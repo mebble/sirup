@@ -17,22 +17,27 @@ Summarise a directory of git repos. Regenerate them from the summary.
 ```
 Usage: ./sirup <sub-command> <args> <flags>
 <sub-command>:
-    sum
+    help                       \tPrint these usage instructions
+    sum                        \tSummarise git repos and print the summary in JSON to stdout
         <args>:
-            --repos ./repos/dir\tThe directory containing all the git repositories
+            --repos ./repos/dir\tThe directory containing the git repos
         <flags>:
             --log [optional]   \tWill output logs to stdout
-    gen
+    gen                        \tGenerate git repos from a summary file
         <args>:
-            --from ./json/file \tThe JSON file containing the output of "./sirup sum"
-            --to ./dest/dir    \tThe destination directory where you want to clone the repositories
+            --from ./sum/file  \tPath to the summary file
+            --to ./dest/dir    \tThe destination directory where you want to clone the repos
+```
+
+Print the above usage instructions by running:
+
+```
+./sirup help
 ```
 
 ## Examples
 
 ### sirup sum
-
-This command summarises the git repositories in your computer and prints the summary in JSON to stdout.
 
 Assuming you have this directory structure:
 
@@ -106,8 +111,6 @@ Output when used with `jq`:
 ```
 
 ### sirup gen
-
-This command generates git repositories from the summary output of `sirup sum`.
 
 Assuming you had executed:
 

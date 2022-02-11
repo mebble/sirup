@@ -7,15 +7,16 @@ from app import summarise, generate
 usage_instructions = '''
 Usage: ./sirup <sub-command> <args> <flags>
 <sub-command>:
-    sum
+    help                       \tPrint these usage instructions
+    sum                        \tSummarise git repos and print the summary in JSON to stdout
         <args>:
-            --repos ./repos/dir\tThe directory containing all the git repositories
+            --repos ./repos/dir\tThe directory containing the git repos
         <flags>:
             --log [optional]   \tWill output logs to stdout
-    gen
+    gen                        \tGenerate git repos from a summary file
         <args>:
-            --from ./json/file \tThe JSON file containing the output of "./sirup sum"
-            --to ./dest/dir    \tThe destination directory where you want to clone the repositories
+            --from ./sum/file  \tPath to the summary file
+            --to ./dest/dir    \tThe destination directory where you want to clone the repos
 '''.strip()
 
 if __name__ == '__main__':
@@ -24,15 +25,18 @@ if __name__ == '__main__':
         print(usage_instructions)
         exit(1)
 
-    if cmd['name'] == 'sum':
+    name = cmd['name']
+    if name == 'help':
+        print(usage_instructions)
+        exit(0)
+    if name == 'sum':
         repos_path = cmd['args']['--repos']
         should_log = cmd['flags']['--log']
         summary = summarise(repos_path, should_log)
         json_output = json.dumps(summary)
         print(json_output)
         exit(0)
-
-    if cmd['name'] == 'gen':
+    if name == 'gen':
         json_path = cmd['args']['--from']
         dest_path = cmd['args']['--to']
         with open(json_path) as f:

@@ -2,6 +2,10 @@ import subprocess
 import sys
 
 cmds = {
+    'help': {
+        'args': [],
+        'flags': []
+    },
     'sum': {
         'args': ['--repos'],
         'flags': ['--log']
