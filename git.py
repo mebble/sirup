@@ -60,5 +60,11 @@ def get_remotes():
         remotes[name][type] = url
     return remotes
 
+def clone_repo(repo_name, repo_url):
+    _, code = run(f'git clone {repo_url} {repo_name}')
+    if _failed(code):
+        return False
+    return True
+
 def _failed(code):
     return code != 0

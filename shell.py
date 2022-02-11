@@ -7,7 +7,8 @@ cmds = {
         'flags': ['--log']
     },
     'gen': {
-        'args': ['--from', '--to']
+        'args': ['--from', '--to'],
+        'flags': []
     }
 }
 

@@ -20,13 +20,39 @@ def summarise(repos_dir, should_log=False):
         repos.append(git_info)
     return repos
 
-def generate(json_path, output_path):
-    pass
+def generate(repos, dest_path):
+    nav.goto_dest_dir(dest_path)
+
+    failed_clones = []
+    for repo in repos:
+        name = repo['name']
+        remotes = repo['remotes']
+        try:
+            remote = remotes['origin']
+        except KeyError:
+            remote = remotes[list(remotes)[0]]
+        fetch_url = remote['fetch']
+        success = git.clone_repo(name, fetch_url)
+        if not success:
+            failed_clones.append(repo)
+
+    if not failed_clones:
+        return True, []
+
+    return False, failed_clones
 
 usage_instructions = '''
-Usage: ./sirup sum --repos ./path/to/repos
-Flags:
-    --log\tWill output logs to stdout
+Usage: ./sirup <sub-command> <args> <flags>
+<sub-command>:
+    sum
+        <args>:
+            --repos ./repos/dir\tThe directory containing all the git repositories
+        <flags>:
+            --log [optional]   \tWill output logs to stdout
+    gen
+        <args>:
+            --from ./json/file \tThe JSON file containing the output of "./sirup sum"
+            --to ./dest/dir    \tThe destination directory where you want to clone the repositories
 '''.strip()
 
 if __name__ == '__main__':
@@ -45,11 +71,14 @@ if __name__ == '__main__':
 
     if cmd['name'] == 'gen':
         json_path = cmd['args']['--from']
-        output_path = cmd['args']['--to']
-        success, err_message = generate(json_path, output_path)
-        if not success:
-            print(err_message)
-            exit(1)
-        exit(0)
+        dest_path = cmd['args']['--to']
+        with open(json_path) as f:
+            repos = json.load(f)
+            success, failed_repos = generate(repos, dest_path)
+            if not success:
+                print('Failed to clone the following repos:')
+                print('\n'.join([repo['name'] for repo in failed_repos]))
+                exit(1)
+            exit(0)
 
     print('This command is not yet implemented')

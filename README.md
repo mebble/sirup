@@ -14,27 +14,27 @@ Summarise a directory of git repos. Regenerate them from the summary.
 
 ## Usage
 
-Basic:
-
-```bash
-./sirup sum --repos ./path/to/repos
+```
+Usage: ./sirup <sub-command> <args> <flags>
+<sub-command>:
+    sum
+        <args>:
+            --repos ./repos/dir\tThe directory containing all the git repositories
+        <flags>:
+            --log [optional]   \tWill output logs to stdout
+    gen
+        <args>:
+            --from ./json/file \tThe JSON file containing the output of "./sirup sum"
+            --to ./dest/dir    \tThe destination directory where you want to clone the repositories
 ```
 
-With logs:
+## Examples
 
-```bash
-./sirup sum --repos ./path/to/repos --log
-```
+### sirup sum
 
-With `jq`:
+This command summarises the git repositories in your computer and prints the summary in JSON to stdout.
 
-```bash
-./sirup sum --repos ./path/to/repos | jq
-```
-
-### Example usage
-
-Directory structure:
+Assuming you have this directory structure:
 
 ```
 `-- projects
@@ -42,13 +42,25 @@ Directory structure:
     `-- burl
 ```
 
-Command:
+Basic usage:
+
+```bash
+./sirup sum --repos ./projects
+```
+
+With logs:
+
+```bash
+./sirup sum --repos ./projects --log
+```
+
+With `jq`:
 
 ```bash
 ./sirup sum --repos ./projects | jq
 ```
 
-Output:
+Output when used with `jq`:
 
 ```json
 [
@@ -91,4 +103,20 @@ Output:
     }
   }
 ]
+```
+
+### sirup gen
+
+This command generates git repositories from the summary output of `sirup sum`.
+
+Assuming you had executed:
+
+```
+./sirup sum --repos ./projects | jq > repos.json
+```
+
+Basic usage:
+
+```bash
+./sirup gen --from repos.json --to output-dir
 ```

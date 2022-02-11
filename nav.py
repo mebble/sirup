@@ -10,6 +10,11 @@ def explore_repos(repos_dir):
         _chdir(path.join(repos_dir, repo))
         yield repo
 
+def goto_dest_dir(dest_path):
+    dest_path = _abs_path(dest_path)
+    run(f'mkdir -p {dest_path}')
+    _chdir(dest_path)
+
 def _abs_path(rel_path):
     return path.abspath(rel_path)
 
