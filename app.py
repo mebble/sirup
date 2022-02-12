@@ -26,14 +26,14 @@ def generate(repos, dest_path):
     for i, repo in enumerate(repos, start=1):
         name = repo['name']
         remotes = repo['remotes']
-        try:
-            remote = remotes['origin']
-        except KeyError:
-            remote = remotes[list(remotes)[0]]
-        fetch_url = remote['fetch']
+        ignore = repo.get('ignore', False) or remotes == None
+        if ignore:
+            print(f'[{i}/{num_repos}] Ignoring repo: {name}')
+            continue
 
+        clone_url = _get_clone_url(remotes)
         print(f'[{i}/{num_repos}] Cloning repo: {name}')
-        success = git.clone_repo(name, fetch_url)
+        success = git.clone_repo(name, clone_url)
         if not success:
             failed_clones.append(repo)
             print(f'Failed')
@@ -44,3 +44,12 @@ def generate(repos, dest_path):
         return True, []
 
     return False, failed_clones
+
+def _get_clone_url(remotes):
+    try:
+        remote = remotes['origin']
+    except KeyError:
+        remote = remotes[list(remotes)[0]]
+    fetch_url = remote['fetch']
+
+    return fetch_url

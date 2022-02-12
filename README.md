@@ -133,3 +133,9 @@ Done
 [2/2] Cloning repo: burl
 Done
 ```
+
+You can add the following fields to a repo object in the JSON summary that `sirup gen` will pick up:
+
+| Field | Description |
+|-------|-------------|
+| `"ignore": true` | The repo will not be cloned |
