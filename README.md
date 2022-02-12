@@ -129,9 +129,9 @@ Output:
 ```
 Cloning repositories to output-dir
 [1/2] Cloning repo: birdwatch
-Done
+[Done]
 [2/2] Cloning repo: burl
-Done
+[Done]
 ```
 
 You can add the following fields to a repo object in the JSON summary that `sirup gen` will pick up:

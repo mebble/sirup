@@ -33,12 +33,12 @@ def generate(repos, dest_path):
 
         clone_url = _get_clone_url(remotes)
         print(f'[{i}/{num_repos}] Cloning repo: {name}')
-        success = git.clone_repo(name, clone_url)
+        success, err_msg = git.clone_repo(name, clone_url)
         if not success:
             failed_clones.append(repo)
-            print(f'Failed')
+            print(f'[Failed] {err_msg}')
         else:
-            print(f'Done')
+            print(f'[Done]')
 
     if not failed_clones:
         return True, []

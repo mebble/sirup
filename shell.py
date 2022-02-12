@@ -20,7 +20,10 @@ def run(cmd: str) -> str:
     cmd_list = cmd.split(' ')
     completed = subprocess.run(cmd_list, text=True, capture_output=True)
     output = completed.stdout
+    err_output = completed.stderr
     exit_code = completed.returncode
+    if _failed(exit_code):
+        return err_output, exit_code
     return output, exit_code
 
 def get_arg(arg_key):
@@ -72,3 +75,6 @@ def get_cmd():
 
 def exit(code):
     sys.exit(code)
+
+def _failed(code):
+    return code != 0
