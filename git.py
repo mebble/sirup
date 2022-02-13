@@ -1,6 +1,6 @@
 from shell import run
 
-def is_clean() -> bool:
+def is_clean():
     output, code = run('git status')
     if _failed(code):
         return None
