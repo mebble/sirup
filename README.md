@@ -4,7 +4,7 @@ Summarise a directory of git repos. Regenerate them from the summary.
 
 ## Who Needs This?
 
-In your computer you might have a directory containing many git repositories. These could be personal projects, college assignments or codebases from work. If you're like me, you might like to keep all repositories in a flat folder structure, like `./projects-personal/*`, `./projects-college/*` and `./projects-work/*`.
+In your computer you might have a directory containing many git repositories. These could be personal projects, college assignments or codebases from work. If you're like me, you might like to keep all repositories in a flat directory structure, like `./projects-personal/*`, `./projects-college/*` and `./projects-work/*`.
 
 Now imagine you just got a new computer and need to move all these repositories to it. If you have hundreds of repos, you'd probably need to copy gigabytes of data. You could first delete your `node_modules`, build files, etc, but this would be really tedious. It would also be tedious to figure out which repo is clean or dirty, which repo is synced to its remote, and so on.
 
@@ -47,6 +47,10 @@ Usage: ./sirup <sub-command> <args> <flags>
             --from  ./sum/file 	Path to the summary file
             --to    ./dest/dir 	The destination directory where you want to clone the repos
 ```
+
+Notes:
+
+- Your git repositories must be kept in a flat directory structure. That is, if your personal projects lie within `./projects-personal/`, they must be direct children of this directory and should not be nested within any sub directories. Future versions of `sirup` might allow nested directories.
 
 ## Examples
 
