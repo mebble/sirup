@@ -4,7 +4,7 @@ Summarise a directory of git repos. Regenerate them from the summary.
 
 ## Who Needs This?
 
-In your computer you might have a directory containing many git repositories. These could be personal projects, college assignments or codebases from work. If you're like me, you might like to keep all repositories in a flat directory structure, like `./projects-personal/*`, `./projects-college/*` and `./projects-work/*`.
+In your computer you might have a directory containing many git repositories. These could be personal projects, college assignments or codebases from work.
 
 Now imagine you just got a new computer and need to move all these repositories to it. If you have hundreds of repos, you'd probably need to copy gigabytes of data. This could take time. Your old computer is probably slow, making this worse. You could first delete your `node_modules`, build files, etc, but this would be really tedious. It would also be tedious to figure out which repo is clean or dirty, which repo is synced to its remote, and so on.
 
