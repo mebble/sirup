@@ -2,6 +2,16 @@
 
 Summarise a directory of git repos. Regenerate them from the summary.
 
+## Who Needs This?
+
+In your computer you might have a directory containing many git repositories. These could be personal projects, college assignments or codebases from work. If you're like me, you might like to keep all repositories in a flat folder structure, like `./projects-personal/*`, `./projects-college/*` and `./projects-work/*`.
+
+Now imagine you just got a new computer and need to move all these repositories to it. If you have hundreds of repos, you'd probably need to copy gigabytes of data. You could first delete your `node_modules`, build files, etc, but this would be really tedious. It would also be tedious to figure out which repo is clean or dirty, which repo is synced to its remote, and so on.
+
+Enter `sirup`. This tool will show you a JSON summary of all your git repositories. You could analyse the JSON using any standard tool to figure out the status of each repo. You could tweak this JSON to your liking. You could move this JSON to another computer and generate the git repositories over there.
+
+This will hopefully save you time and data.
+
 ## Requirements
 
 - Python 3 at `/usr/bin/python3`
