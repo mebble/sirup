@@ -34,6 +34,8 @@ if __name__ == '__main__':
         should_log = cmd['flags']['--log']
         summary = summarise(repos_path, should_log)
         json_output = json.dumps(summary)
+        if should_log:
+            print('Summary:')
         print(json_output)
         exit(0)
     if name == 'gen':
