@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 import json
-from shell import get_cmd, exit
+import sys
+from shell import get_cmd
 from app import summarise, generate
 
 usage_instructions = '''
@@ -20,15 +21,15 @@ Usage: ./sirup <sub-command> <args> <flags>
 '''.strip()
 
 if __name__ == '__main__':
-    cmd, success = get_cmd()
+    cmd, success = get_cmd(sys.argv)
     if not success:
         print(usage_instructions)
-        exit(1)
+        sys.exit(1)
 
     name = cmd['name']
     if name == 'help':
         print(usage_instructions)
-        exit(0)
+        sys.exit(0)
     if name == 'sum':
         repos_path = cmd['args']['--repos']
         should_log = cmd['flags']['--log']
@@ -37,7 +38,7 @@ if __name__ == '__main__':
         if should_log:
             print('Summary:')
         print(json_output)
-        exit(0)
+        sys.exit(0)
     if name == 'gen':
         json_path = cmd['args']['--from']
         dest_path = cmd['args']['--to']
@@ -47,7 +48,7 @@ if __name__ == '__main__':
             if not success:
                 print('Failed to clone the following repos:')
                 print('\n'.join([repo['name'] for repo in failed_repos]))
-                exit(1)
-            exit(0)
+                sys.exit(1)
+            sys.exit(0)
 
     print('This command is not yet implemented')

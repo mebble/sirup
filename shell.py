@@ -1,5 +1,4 @@
 import subprocess
-import sys
 
 cmds = {
     'help': {
@@ -26,29 +25,29 @@ def run(cmd: str):
         return err_output, exit_code
     return output, exit_code
 
-def get_arg(arg_key):
+def _get_arg(argv, arg_key):
     try:
-        key_index = sys.argv.index(arg_key)
+        key_index = argv.index(arg_key)
     except ValueError:
-        return '', False
+        return None, False
 
     val_index = key_index + 1
-    has_val = len(sys.argv) >= val_index + 1
+    has_val = len(argv) >= val_index + 1
     if not has_val:
-        return '', False
+        return None, False
 
-    return sys.argv[val_index], True
+    return argv[val_index], True
 
-def get_flag(flag):
+def _get_flag(argv, flag):
     try:
-        sys.argv.index(flag)
+        argv.index(flag)
         return True
     except ValueError:
         return False
 
-def get_cmd():
+def get_cmd(argv):
     try:
-        cmd = sys.argv[1]
+        cmd = argv[1]
     except IndexError:
         return None, False
 
@@ -57,14 +56,14 @@ def get_cmd():
 
     args = {}
     for arg_key in cmds[cmd]['args']:
-        arg_val, exists = get_arg(arg_key)
+        arg_val, exists = _get_arg(argv, arg_key)
         if not exists:
             return None, False
         args[arg_key] = arg_val
 
     flags = {}
     for flag in cmds[cmd]['flags']:
-        exists = get_flag(flag)
+        exists = _get_flag(argv, flag)
         flags[flag] = exists
 
     return {
@@ -72,9 +71,6 @@ def get_cmd():
         'args': args,
         'flags': flags
     }, True
-
-def exit(code):
-    sys.exit(code)
 
 def _failed(code):
     return code != 0

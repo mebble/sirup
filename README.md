@@ -156,3 +156,11 @@ You can add the following fields to a repo object in the JSON summary that `siru
 | Field | Description |
 |-------|-------------|
 | `"ignore": true` | The repo will not be cloned |
+
+## Development
+
+### Testing
+
+```sh
+python3 -m unittest tests.test_shell
+```
