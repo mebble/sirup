@@ -19,3 +19,77 @@ class TestGit(unittest.TestCase):
     def test_is_clean_yes(self):
         self.run.return_value = ('foobarbaz, nothing to commit, working tree clean, foobarbaz', 0)
         self.assertTrue(self.git.is_clean())
+
+    def test_get_repo_size_fail(self):
+        git_output = (
+            'whatever'
+        )
+        self.run.return_value = (git_output, 1)
+        self.assertIsNone(self.git.get_repo_size())
+
+    def test_get_repo_size(self):
+        git_output = (
+            'size: 123.00 KiB\n'
+            'size-pack: 321.45 KiB\n'
+            'in-pack: 163'
+        )
+        self.run.return_value = (git_output, 0)
+        self.assertEqual({'value': '321.45', 'unit': 'KiB'}, self.git.get_repo_size())
+
+    def test_get_current_branch_fail(self):
+        git_output = (
+            'whatever'
+        )
+        self.run.return_value = (git_output, 1)
+        self.assertIsNone(self.git.get_current_branch())
+
+    def test_get_current_branch_no_commit(self):
+        git_output = (
+            '## No commits yet on main'
+        )
+        self.run.return_value = (git_output, 0)
+        self.assertIsNone(self.git.get_current_branch())
+
+    def test_get_current_branch_no_remote(self):
+        git_output = (
+            'foobar\n'
+            '## main\n'
+            'foobar'
+        )
+        self.run.return_value = (git_output, 0)
+        self.assertEqual({ 'local_branch': 'main' }, self.git.get_current_branch())
+
+    def test_get_current_branch_not_synced(self):
+        git_output1 = (
+            'foobar\n'
+            '## main...origin/main [ahead 3]\n'
+            'foobar'
+        )
+        git_output2 = (
+            'foobar\n'
+            '## main...origin/main [behind 3]\n'
+            'foobar'
+        )
+
+        for git_output in [git_output1, git_output2]:
+            self.run.return_value = (git_output, 0)
+            expected = {
+                'local_branch': 'main',
+                'remote_branch': 'origin/main',
+                'synced': False,
+            }
+            self.assertEqual(expected, self.git.get_current_branch())
+
+    def test_get_current_branch_synced(self):
+        git_output = (
+            'foobar\n'
+            '## main...origin/main\n'
+            'foobar'
+        )
+        self.run.return_value = (git_output, 0)
+        expected = {
+            'local_branch': 'main',
+            'remote_branch': 'origin/main',
+            'synced': True,
+        }
+        self.assertEqual(expected, self.git.get_current_branch())

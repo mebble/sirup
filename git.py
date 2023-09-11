@@ -29,7 +29,12 @@ class Git:
         if _failed(code):
             return None
 
-        branch_pair = output.split()[1]
+        if 'No commits yet' in output:
+            return None
+
+        tokens = output.split()
+        branch_pair_index = tokens.index('##') + 1
+        branch_pair = tokens[branch_pair_index]
         pair_split_index = branch_pair.find('...')
         if pair_split_index == -1:
             return {
