@@ -1,7 +1,6 @@
 import nav
-import git
 
-def summarise(repos_dir, should_log=False):
+def summarise(git, repos_dir, should_log=False):
     repos = []
     for repo in nav.explore_repos(repos_dir):
         if should_log:
@@ -16,7 +15,7 @@ def summarise(repos_dir, should_log=False):
         repos.append(git_info)
     return repos
 
-def generate(repos, dest_path):
+def generate(git, repos, dest_path):
     nav.goto_dest_dir(dest_path)
     print(f'Cloning repositories to {dest_path}')
     num_repos = len(repos)

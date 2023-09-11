@@ -2,7 +2,8 @@
 
 import json
 import sys
-from shell import get_cmd
+from git import Git
+from shell import get_cmd, run
 from app import summarise, generate
 
 usage_instructions = '''
@@ -30,10 +31,12 @@ if __name__ == '__main__':
     if name == 'help':
         print(usage_instructions)
         sys.exit(0)
+
+    git = Git(run)
     if name == 'sum':
         repos_path = cmd['args']['--repos']
         should_log = cmd['flags']['--log']
-        summary = summarise(repos_path, should_log)
+        summary = summarise(git, repos_path, should_log)
         json_output = json.dumps(summary)
         if should_log:
             print('Summary:')
@@ -44,7 +47,7 @@ if __name__ == '__main__':
         dest_path = cmd['args']['--to']
         with open(json_path) as f:
             repos = json.load(f)
-            success, failed_repos = generate(repos, dest_path)
+            success, failed_repos = generate(git, repos, dest_path)
             if not success:
                 print('Failed to clone the following repos:')
                 print('\n'.join([repo['name'] for repo in failed_repos]))
