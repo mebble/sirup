@@ -1,5 +1,9 @@
+from collections.abc import Callable
+
+Runnable = Callable[[str], tuple[str, int]]
+
 class Git:
-    def __init__(self, run):
+    def __init__(self, run: Runnable):
         self.run = run
 
     def is_clean(self):

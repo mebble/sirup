@@ -1,6 +1,6 @@
 import subprocess
 
-cmds = {
+cmds: dict[str, dict[str, list[str]]] = {
     'help': {
         'args': [],
         'flags': []
@@ -15,7 +15,7 @@ cmds = {
     }
 }
 
-def run(cmd: str):
+def run(cmd: str) -> tuple[str, int]:
     cmd_list = cmd.split(' ')
     completed = subprocess.run(cmd_list, text=True, capture_output=True)
     output = completed.stdout
@@ -25,7 +25,7 @@ def run(cmd: str):
         return err_output, exit_code
     return output, exit_code
 
-def _get_arg(argv, arg_key):
+def _get_arg(argv: list[str], arg_key: str):
     try:
         key_index = argv.index(arg_key)
     except ValueError:
@@ -38,14 +38,14 @@ def _get_arg(argv, arg_key):
 
     return argv[val_index], True
 
-def _get_flag(argv, flag):
+def _get_flag(argv: list[str], flag: str):
     try:
         argv.index(flag)
         return True
     except ValueError:
         return False
 
-def get_cmd(argv):
+def get_cmd(argv: list[str]):
     try:
         cmd = argv[1]
     except IndexError:
@@ -54,14 +54,14 @@ def get_cmd(argv):
     if cmd not in cmds:
         return None, False
 
-    args = {}
+    args: dict[str, str | None] = {}
     for arg_key in cmds[cmd]['args']:
         arg_val, exists = _get_arg(argv, arg_key)
         if not exists:
             return None, False
         args[arg_key] = arg_val
 
-    flags = {}
+    flags: dict[str, bool] = {}
     for flag in cmds[cmd]['flags']:
         exists = _get_flag(argv, flag)
         flags[flag] = exists
@@ -72,5 +72,5 @@ def get_cmd(argv):
         'flags': flags
     }, True
 
-def _failed(code):
+def _failed(code: int) -> bool:
     return code != 0
