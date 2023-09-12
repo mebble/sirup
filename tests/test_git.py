@@ -22,7 +22,7 @@ class TestGit(unittest.TestCase):
 
     def test_get_repo_size_fail(self):
         git_output = (
-            'whatever'
+            'whatever\n'
         )
         self.run.return_value = (git_output, 1)
         self.assertIsNone(self.git.get_repo_size())
@@ -31,21 +31,21 @@ class TestGit(unittest.TestCase):
         git_output = (
             'size: 123.00 KiB\n'
             'size-pack: 321.45 KiB\n'
-            'in-pack: 163'
+            'in-pack: 163\n'
         )
         self.run.return_value = (git_output, 0)
         self.assertEqual({'value': '321.45', 'unit': 'KiB'}, self.git.get_repo_size())
 
     def test_get_current_branch_fail(self):
         git_output = (
-            'whatever'
+            'whatever\n'
         )
         self.run.return_value = (git_output, 1)
         self.assertIsNone(self.git.get_current_branch())
 
     def test_get_current_branch_no_commit(self):
         git_output = (
-            '## No commits yet on main'
+            '## No commits yet on main\n'
         )
         self.run.return_value = (git_output, 0)
         self.assertIsNone(self.git.get_current_branch())
@@ -54,7 +54,7 @@ class TestGit(unittest.TestCase):
         git_output = (
             'foobar\n'
             '## main\n'
-            'foobar'
+            'foobar\n'
         )
         self.run.return_value = (git_output, 0)
         self.assertEqual({ 'local_branch': 'main' }, self.git.get_current_branch())
@@ -63,12 +63,12 @@ class TestGit(unittest.TestCase):
         git_output1 = (
             'foobar\n'
             '## main...origin/main [ahead 3]\n'
-            'foobar'
+            'foobar\n'
         )
         git_output2 = (
             'foobar\n'
             '## main...origin/main [behind 3]\n'
-            'foobar'
+            'foobar\n'
         )
 
         for git_output in [git_output1, git_output2]:
@@ -84,7 +84,7 @@ class TestGit(unittest.TestCase):
         git_output = (
             'foobar\n'
             '## main...origin/main\n'
-            'foobar'
+            'foobar\n'
         )
         self.run.return_value = (git_output, 0)
         expected = {
@@ -93,3 +93,29 @@ class TestGit(unittest.TestCase):
             'synced': True,
         }
         self.assertEqual(expected, self.git.get_current_branch())
+
+    def test_get_remotes_fail(self):
+        git_output = (
+            'whatever\n'
+        )
+        self.run.return_value = (git_output, 1)
+        self.assertIsNone(self.git.get_remotes())
+
+    def test_get_remotes_no_remote(self):
+        git_output = '\n'
+        self.run.return_value = (git_output, 0)
+        self.assertIsNone(self.git.get_remotes())
+
+    def test_get_remotes(self):
+        git_output = (
+            'origin  git@github.com:mebble/sirup.git (fetch)\n'
+            'origin  git@github.com:mebble/sirup.git (push)\n'
+        )
+        self.run.return_value = (git_output, 0)
+        expected = {
+            'origin': {
+                'fetch': 'git@github.com:mebble/sirup.git',
+                'push': 'git@github.com:mebble/sirup.git',
+            }
+        }
+        self.assertEqual(expected, self.git.get_remotes())
