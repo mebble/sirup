@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from git import Git
+from git import Git, Branch, RepoSize
 
 class TestGit(unittest.TestCase):
     def setUp(self) -> None:
@@ -34,7 +34,8 @@ class TestGit(unittest.TestCase):
             'in-pack: 163\n'
         )
         self.run.return_value = (git_output, 0)
-        self.assertEqual({'value': '321.45', 'unit': 'KiB'}, self.git.get_repo_size())
+        expected = RepoSize(value='321.45', unit='KiB')
+        self.assertEqual(expected, self.git.get_repo_size())
 
     def test_get_current_branch_fail(self):
         git_output = (
@@ -57,7 +58,8 @@ class TestGit(unittest.TestCase):
             'foobar\n'
         )
         self.run.return_value = (git_output, 0)
-        self.assertEqual({ 'local_branch': 'main' }, self.git.get_current_branch())
+        expected = Branch(local_branch='main')
+        self.assertEqual(expected, self.git.get_current_branch())
 
     def test_get_current_branch_not_synced(self):
         git_output1 = (
@@ -73,11 +75,7 @@ class TestGit(unittest.TestCase):
 
         for git_output in [git_output1, git_output2]:
             self.run.return_value = (git_output, 0)
-            expected = {
-                'local_branch': 'main',
-                'remote_branch': 'origin/main',
-                'synced': False,
-            }
+            expected = Branch(local_branch='main', remote_branch='origin/main', is_sync=False)
             self.assertEqual(expected, self.git.get_current_branch())
 
     def test_get_current_branch_synced(self):
@@ -87,11 +85,7 @@ class TestGit(unittest.TestCase):
             'foobar\n'
         )
         self.run.return_value = (git_output, 0)
-        expected = {
-            'local_branch': 'main',
-            'remote_branch': 'origin/main',
-            'synced': True,
-        }
+        expected = Branch(local_branch='main', remote_branch='origin/main', is_sync=True)
         self.assertEqual(expected, self.git.get_current_branch())
 
     def test_get_remotes_fail(self):

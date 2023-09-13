@@ -1,5 +1,5 @@
 import unittest
-from shell import get_cmd
+from shell import get_cmd, Command
 
 class TestGetCmd(unittest.TestCase):
     def test_argv_unkown_cmd(self):
@@ -13,21 +13,13 @@ class TestGetCmd(unittest.TestCase):
 
     def test_argv_no_flag(self):
         res, ok = get_cmd(['script.py', 'sum', '--repos', 'foobar'])
-        expected = {
-            'name': 'sum',
-            'args': { '--repos': 'foobar' },
-            'flags': { '--log': False }
-        }
+        expected = Command(name='sum', args={'--repos': 'foobar'}, flags={'--log': False})
         self.assertTrue(ok)
         self.assertEqual(expected, res)
 
     def test_argv_with_flag(self):
         res, ok = get_cmd(['script.py', 'sum', '--repos', 'foobar', '--log'])
-        expected = {
-            'name': 'sum',
-            'args': { '--repos': 'foobar' },
-            'flags': { '--log': True }
-        }
+        expected = Command(name='sum', args={'--repos': 'foobar'}, flags={'--log': True})
         self.assertTrue(ok)
         self.assertEqual(expected, res)
 

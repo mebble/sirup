@@ -1,18 +1,18 @@
 import nav
-from git import Git
+from git import Git, GitInfo
 
 def summarise(git: Git, repos_dir: str, should_log=False):
-    repos = []
+    repos: list[GitInfo] = []
     for repo in nav.explore_repos(repos_dir):
         if should_log:
             print(f'Checking repo: {repo}')
-        git_info = {
-            'name': repo,
-            'is_clean': git.is_clean(),
-            'current_branch': git.get_current_branch(),
-            'remotes': git.get_remotes(),
-            'size': git.get_repo_size()
-        }
+        git_info = GitInfo(
+            name=repo,
+            is_clean=git.is_clean(),
+            current_branch=git.get_current_branch(),
+            remotes=git.get_remotes(),
+            size=git.get_repo_size()
+        )
         repos.append(git_info)
     return repos
 

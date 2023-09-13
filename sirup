@@ -2,6 +2,7 @@
 
 import json
 import sys
+from dataclasses import asdict
 from git import Git
 from shell import get_cmd, run
 from app import summarise, generate
@@ -27,24 +28,24 @@ if __name__ == '__main__':
         print(usage_instructions)
         sys.exit(1)
 
-    name = cmd['name']
+    name = cmd.name
     if name == 'help':
         print(usage_instructions)
         sys.exit(0)
 
     git = Git(run)
     if name == 'sum':
-        repos_path = cmd['args']['--repos']
-        should_log = cmd['flags']['--log']
+        repos_path = cmd.args['--repos']
+        should_log = cmd.flags['--log']
         summary = summarise(git, repos_path, should_log)
-        json_output = json.dumps(summary)
+        json_output = json.dumps([asdict(repo) for repo in summary])
         if should_log:
             print('Summary:')
         print(json_output)
         sys.exit(0)
     if name == 'gen':
-        json_path = cmd['args']['--from']
-        dest_path = cmd['args']['--to']
+        json_path = cmd.args['--from']
+        dest_path = cmd.args['--to']
         with open(json_path) as f:
             repos = json.load(f)
             success, failed_repos = generate(git, repos, dest_path)

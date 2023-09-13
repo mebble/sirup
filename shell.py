@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+from typing import cast
 import subprocess
 
 cmds: dict[str, dict[str, list[str]]] = {
@@ -45,6 +47,12 @@ def _get_flag(argv: list[str], flag: str):
     except ValueError:
         return False
 
+@dataclass
+class Command:
+    name: str
+    args: dict[str, str]
+    flags: dict[str, bool]
+
 def get_cmd(argv: list[str]):
     try:
         cmd = argv[1]
@@ -54,11 +62,12 @@ def get_cmd(argv: list[str]):
     if cmd not in cmds:
         return None, False
 
-    args: dict[str, str | None] = {}
+    args: dict[str, str] = {}
     for arg_key in cmds[cmd]['args']:
         arg_val, exists = _get_arg(argv, arg_key)
         if not exists:
             return None, False
+        arg_val = cast(str, arg_val)
         args[arg_key] = arg_val
 
     flags: dict[str, bool] = {}
@@ -66,11 +75,7 @@ def get_cmd(argv: list[str]):
         exists = _get_flag(argv, flag)
         flags[flag] = exists
 
-    return {
-        'name': cmd,
-        'args': args,
-        'flags': flags
-    }, True
+    return Command(cmd, args, flags), True
 
 def _failed(code: int) -> bool:
     return code != 0
