@@ -27,6 +27,12 @@ class Git:
     def __init__(self, run: Runnable):
         self.run = run
 
+    def is_git_repo(self):
+        output, code = self.run('git rev-parse --is-inside-work-tree')
+        if _failed(code):
+            return False
+        return output.strip() == 'true'
+
     def is_clean(self) -> Optional[bool]:
         output, code = self.run('git status')
         if _failed(code):

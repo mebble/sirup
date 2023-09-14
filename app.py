@@ -4,6 +4,8 @@ from git import Git, GitInfo
 def summarise(git: Git, repos_dir: str, should_log=False):
     repos: list[GitInfo] = []
     for repo in nav.explore_repos(repos_dir):
+        if not git.is_git_repo():
+            continue
         if should_log:
             print(f'Checking repo: {repo}')
         git_info = GitInfo(

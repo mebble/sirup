@@ -8,6 +8,18 @@ class TestGit(unittest.TestCase):
         self.run = Mock()
         self.git = Git(self.run)
 
+    def test_is_git_repo_fail(self):
+        self.run.return_value = ('cat', 1)
+        self.assertFalse(self.git.is_git_repo())
+
+    def test_is_git_repo_no(self):
+        self.run.return_value = ('\nfalse\n', 0)
+        self.assertFalse(self.git.is_git_repo())
+
+    def test_is_git_repo_yes(self):
+        self.run.return_value = ('\ntrue\n', 0)
+        self.assertTrue(self.git.is_git_repo())
+
     def test_is_clean_fail(self):
         self.run.return_value = ('cat', 1)
         self.assertIsNone(self.git.is_clean())
