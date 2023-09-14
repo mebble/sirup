@@ -2,16 +2,6 @@
 
 Summarise a directory of git repos. Regenerate them from the summary.
 
-## Who Needs This?
-
-In your computer you might have a directory containing many git repositories. These could be personal projects, college assignments or codebases from work.
-
-Now imagine you just got a new computer and need to move all these repositories to it. If you have hundreds of repos, you'd probably need to copy gigabytes of data. This could take time. Your old computer is probably slow, making this worse. You could first delete your `node_modules`, build files, etc, but this would be really tedious. It would also be tedious to figure out which repo is clean or dirty, which repo is synced to its remote, and so on.
-
-Enter `sirup`. This tool will show you a JSON summary of all your git repositories. You could analyse the JSON using any standard tool to figure out the status of each repo. You could tweak this JSON to your liking. You could move this JSON to another computer and generate the git repositories over there.
-
-This will hopefully save you time and data.
-
 ## Requirements
 
 - Python 3 at `/usr/bin/python3`
@@ -20,21 +10,30 @@ This will hopefully save you time and data.
 
 ## Installation
 
-1. Clone this repo
-2. `cd` into the repo and run `chmod +x ./sirup`
+### Install
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mebble/sirup/main/scripts/install.sh | sh
+```
+
+### Remove
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mebble/sirup/main/scripts/remove.sh | sh
+```
 
 ## Usage
 
 Print the usage instructions by running:
 
 ```
-./sirup help
+sirup help
 ```
 
 Output:
 
 ```
-Usage: ./sirup <sub-command> <args> <flags>
+Usage: sirup <sub-command> <args> <flags>
 <sub-command>:
     help                       	Print these usage instructions
     sum                        	Summarise git repos and print the summary in JSON to stdout
@@ -67,19 +66,19 @@ Assuming you have this directory structure:
 Basic usage:
 
 ```bash
-./sirup sum --repos ./projects
+sirup sum --repos ./projects
 ```
 
 With logs:
 
 ```bash
-./sirup sum --repos ./projects --log
+sirup sum --repos ./projects --log
 ```
 
 Piped to `jq` (don't use any flags so that only JSON gets piped to `jq`):
 
 ```bash
-./sirup sum --repos ./projects | jq
+sirup sum --repos ./projects | jq
 ```
 
 Output when piped to `jq`:
@@ -132,13 +131,13 @@ Output when piped to `jq`:
 Assuming you had executed:
 
 ```
-./sirup sum --repos ./projects > repos.json
+sirup sum --repos ./projects > repos.json
 ```
 
 Basic usage:
 
 ```bash
-./sirup gen --from repos.json --to output-dir
+sirup gen --from repos.json --to output-dir
 ```
 
 Output:
@@ -157,10 +156,21 @@ You can add the following fields to a repo object in the JSON summary that `siru
 |-------|-------------|
 | `"ignore": true` | The repo will not be cloned |
 
+## Who Needs This?
+
+In your computer you might have a directory containing many git repositories. These could be personal projects, college assignments or codebases from work.
+
+Now imagine you just got a new computer and need to move all these repositories to it. If you have hundreds of repos, you'd probably need to copy gigabytes of data. This could take time. Your old computer is probably slow, making this worse. You could first delete your `node_modules`, build files, etc, but this would be really tedious. It would also be tedious to figure out which repo is clean or dirty, which repo is synced to its remote, and so on.
+
+Enter `sirup`. This tool will show you a JSON summary of all your git repositories. You could analyse the JSON using any standard tool to figure out the status of each repo. You could tweak this JSON to your liking. You could move this JSON to another computer and generate the git repositories over there.
+
+This will hopefully save you time and data.
+
 ## Development
 
 ### Testing
 
 ```sh
 python3 -m unittest tests.test_shell
+python3 -m unittest tests.test_git
 ```
