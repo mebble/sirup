@@ -33,18 +33,15 @@ sirup help
 Output:
 
 ```
-Usage: sirup <sub-command> <args> <flags>
-<sub-command>:
+Usage: sirup <command> <args>
+commands:
     help                       	Print these usage instructions
     sum                        	Summarise git repos and print the summary in JSON to stdout
-        <args>:
-            --repos ./repos/dir	The directory containing the git repos
-        <flags>:
-            --log   [optional] 	Will output logs to stdout
+        --repos ./repos/dir	The directory containing the git repos
+        --log   [optional] 	Will output logs to stdout
     gen                        	Generate git repos from a summary file
-        <args>:
-            --from  ./sum/file 	Path to the summary file
-            --to    ./dest/dir 	The destination directory where you want to clone the repos
+        --from  ./sum/file 	Path to the summary file
+        --to    ./dest/dir 	The destination directory where you want to clone the repos
 ```
 
 Notes:
