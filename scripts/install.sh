@@ -12,7 +12,7 @@ then
     ln -s "$APP_PATH/sirup" $EXE_PATH
 else
     cd $APP_PATH
-    git pull
+    git pull --rebase
 fi
 
 cat <<EOF

@@ -2,12 +2,25 @@
 
 Summarise a directory of git repos. Regenerate them from the summary.
 
+- [Requirements](#requirements)
+- [Installation](#installation)
+  * [Install and update](#install-and-update)
+  * [Remove](#remove)
+- [Usage](#usage)
+- [Examples](#examples)
+  * [sirup sum](#sirup-sum)
+    + [Recipes](#recipes)
+  * [sirup gen](#sirup-gen)
+- [Who Needs This?](#who-needs-this)
+- [Development](#development)
+  * [Testing](#testing)
+
 ## Requirements
 
 - Python 3 at `/usr/bin/python3`
 - Git 2.22 or above
 - Ensure that `~/.local/bin/` is in your `$PATH` environment variable
-- [`jq`](https://stedolan.github.io/jq/) (optional)
+- [`jq`](https://stedolan.github.io/jq/) (optional) so you can use some handy recipes shown below
 
 ## Installation
 
@@ -99,7 +112,7 @@ Output when piped to `jq`:
       }
     },
     "size": {
-      "value": "11.76",
+      "value": 11.76,
       "unit": "KiB"
     }
   },
@@ -118,11 +131,31 @@ Output when piped to `jq`:
       }
     },
     "size": {
-      "value": "10.90",
+      "value": 10.90,
       "unit": "KiB"
     }
   }
 ]
+```
+
+#### Recipes
+
+Sort the repos by size:
+
+```bash
+sirup sum --repos . | jq '. | sort_by(.size.value) | group_by(.size.unit) | flatten | .[] | [.name, .size.value, .size.unit] | tostring' -r | tr -d '[]"' | column -t -s ','
+```
+
+Get the names of dirty repos:
+
+```bash
+sirup sum --repos . | jq '.[] | select(.is_clean | not) | .name'
+```
+
+Get the names of repos that aren't synced with their remotes:
+
+```bash
+sirup sum --repos . | jq '.[] | select(.current_branch.is_sync | not) | .name'
 ```
 
 ### sirup gen
