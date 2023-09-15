@@ -9,7 +9,7 @@ from app import summarise, generate
 
 usage_instructions = '''
 Usage: sirup <command> <args>
-commands:
+Commands:
     help                    \tPrint these usage instructions
     sum                     \tSummarise git repos and print the summary in JSON to stdout
         --repos ./repos/dir \tThe directory containing the git repos
@@ -17,6 +17,7 @@ commands:
     gen                     \tGenerate git repos from a summary file
         --from  ./sum/file  \tPath to the summary file
         --to    ./dest/dir  \tThe destination directory where you want to clone the repos
+For more information, visit: https://github.com/mebble/sirup/blob/main/README.md
 '''.strip()
 
 if __name__ == '__main__':

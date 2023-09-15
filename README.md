@@ -6,11 +6,12 @@ Summarise a directory of git repos. Regenerate them from the summary.
 
 - Python 3 at `/usr/bin/python3`
 - Git 2.22 or above
+- Ensure that `~/.local/bin/` is in your `$PATH` environment variable
 - [`jq`](https://stedolan.github.io/jq/) (optional)
 
 ## Installation
 
-### Install
+### Install and update
 
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mebble/sirup/main/scripts/install.sh | sh
@@ -34,14 +35,15 @@ Output:
 
 ```
 Usage: sirup <command> <args>
-commands:
-    help                       	Print these usage instructions
-    sum                        	Summarise git repos and print the summary in JSON to stdout
-        --repos ./repos/dir	The directory containing the git repos
-        --log   [optional] 	Will output logs to stdout
-    gen                        	Generate git repos from a summary file
-        --from  ./sum/file 	Path to the summary file
-        --to    ./dest/dir 	The destination directory where you want to clone the repos
+Commands:
+    help                        Print these usage instructions
+    sum                         Summarise git repos and print the summary in JSON to stdout
+        --repos ./repos/dir     The directory containing the git repos
+        --log   [optional]      Will output logs to stdout
+    gen                         Generate git repos from a summary file
+        --from  ./sum/file      Path to the summary file
+        --to    ./dest/dir      The destination directory where you want to clone the repos
+For more information, visit: https://github.com/mebble/sirup/blob/main/README.md
 ```
 
 Notes:

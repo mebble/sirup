@@ -4,11 +4,16 @@
 APP_PATH="$HOME/.local/share/sirup/"
 EXE_PATH="$HOME/.local/bin/sirup"
 
-mkdir -p $APP_PATH
-
 echo "Downloading sirup"
-git clone https://github.com/mebble/sirup.git $APP_PATH
-ln -s "$APP_PATH/sirup" $EXE_PATH
+if [ ! -d $APP_PATH ]
+then
+    mkdir -p $APP_PATH
+    git clone https://github.com/mebble/sirup.git $APP_PATH
+    ln -s "$APP_PATH/sirup" $EXE_PATH
+else
+    cd $APP_PATH
+    git pull
+fi
 
 cat <<EOF
 Successfully installed!
