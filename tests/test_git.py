@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from git import Git, Branch, RepoSize
+from git import Git, Branch, Repo, RepoSize, parse_repos
 
 class TestGit(unittest.TestCase):
     def setUp(self) -> None:
@@ -125,3 +125,80 @@ class TestGit(unittest.TestCase):
             }
         }
         self.assertEqual(expected, self.git.get_remotes())
+
+class ParseRepo(unittest.TestCase):
+    def test_parse_repos_not_list(self):
+        success, repos = parse_repos({ 'foo': 'bar' })
+        self.assertFalse(success)
+        self.assertEqual([], repos)
+
+    def test_parse_repos_fail(self):
+        json = [
+            { 
+                'name': 'foo',
+                'is_clean': True,
+                'size': { 'value': '123', 'unit': 'xyz' },
+                'current_branch': { 'local_branch': 'foo', 'remote_branch': 'foo', 'is_sync': True },
+                'remotes': {},
+            },
+            {
+                'foo': 'bar'
+            }
+        ]
+        success, repos = parse_repos(json)
+        self.assertFalse(success)
+        self.assertEqual([], repos)
+
+    def test_parse_repos_pass(self):
+        json = [
+            { 
+                'name': 'foo',
+                'is_clean': True,
+                'size': { 'value': '123', 'unit': 'xyz' },
+                'current_branch': { 'local_branch': 'foo', 'remote_branch': 'foo', 'is_sync': True },
+                'remotes': {},
+                'ignore': True,
+            },
+            { 
+                'name': 'foo',
+                'is_clean': True,
+                'size': { 'value': '123', 'unit': 'xyz' },
+                'current_branch': { 'local_branch': 'foo', 'remote_branch': 'foo', 'is_sync': True },
+                'remotes': {},
+            }
+        ]
+        expected = [
+            Repo(
+                name='foo',
+                is_clean=True,
+                size=RepoSize(
+                    value='123',
+                    unit='xyz'
+                ),
+                current_branch=Branch(
+                    local_branch='foo',
+                    remote_branch='foo',
+                    is_sync=True,
+                ),
+                remotes={},
+                ignore=True,
+            ),
+            Repo(
+                name='foo',
+                is_clean=True,
+                size=RepoSize(
+                    value='123',
+                    unit='xyz'
+                ),
+                current_branch=Branch(
+                    local_branch='foo',
+                    remote_branch='foo',
+                    is_sync=True,
+                ),
+                remotes={},
+                ignore=False,
+            )
+        ]
+        success, repos = parse_repos(json)
+        self.assertTrue(success)
+        self.assertEqual(expected, repos)

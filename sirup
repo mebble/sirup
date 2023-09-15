@@ -3,8 +3,9 @@
 import json
 import sys
 from dataclasses import asdict
-from git import Git
-from shell import get_cmd, run
+from typing import cast
+from git import Git, parse_repos
+from shell import Command, get_cmd, run
 from app import summarise, generate
 
 usage_instructions = '''
@@ -25,6 +26,7 @@ if __name__ == '__main__':
     if not success:
         print(usage_instructions)
         sys.exit(1)
+    cmd = cast(Command, cmd)
 
     name = cmd.name
     if name == 'help':
@@ -45,11 +47,15 @@ if __name__ == '__main__':
         json_path = cmd.args['--from']
         dest_path = cmd.args['--to']
         with open(json_path) as f:
-            repos = json.load(f)
+            repos_json = json.load(f)
+            success, repos = parse_repos(repos_json)
+            if not success:
+                print('JSON schema is invalid')
+                sys.exit(1)
             success, failed_repos = generate(git, repos, dest_path)
             if not success:
                 print('Failed to clone the following repos:')
-                print('\n'.join([repo['name'] for repo in failed_repos]))
+                print('\n'.join([repo.name for repo in failed_repos]))
                 sys.exit(1)
             sys.exit(0)
 

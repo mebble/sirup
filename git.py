@@ -1,11 +1,18 @@
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Optional
 
 @dataclass
 class RepoSize:
     value: str
     unit: str
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]):
+        return cls(
+            value=data['value'],
+            unit=data['unit'],
+        )
 
 @dataclass
 class Branch:
@@ -13,13 +20,33 @@ class Branch:
     remote_branch: Optional[str] = None
     is_sync: Optional[bool] = None
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]):
+        return cls(
+            local_branch=data['local_branch'],
+            remote_branch=data['remote_branch'],
+            is_sync=data['is_sync'],
+        )
+
 @dataclass
-class GitInfo:
+class Repo:
     name: str
     is_clean: Optional[bool]
     size: Optional[RepoSize]
     current_branch: Optional[Branch]
     remotes: Optional[dict[str, str]]
+    ignore: bool = False
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]):
+        return cls(
+            name=data['name'],
+            is_clean=data['is_clean'],
+            size=RepoSize.from_dict(data['size']),
+            current_branch=Branch.from_dict(data['current_branch']),
+            remotes=data['remotes'],
+            ignore=data.get('ignore', False)
+        )
 
 Runnable = Callable[[str], tuple[str, int]]
 
@@ -97,3 +124,16 @@ class Git:
 
 def _failed(code):
     return code != 0
+
+def parse_repos(json: Any):
+    all_dicts = all(map(lambda item: isinstance(item, dict), json))
+    if not all_dicts:
+        return False, []
+
+    repos: list[Repo] = []
+    try:
+        repos = [Repo.from_dict(item) for item in json]
+    except KeyError:
+        return False, []
+
+    return True, repos
