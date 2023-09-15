@@ -46,7 +46,7 @@ class TestGit(unittest.TestCase):
             'in-pack: 163\n'
         )
         self.run.return_value = (git_output, 0)
-        expected = RepoSize(value='321.45', unit='KiB')
+        expected = RepoSize(value=321.45, unit='KiB')
         self.assertEqual(expected, self.git.get_repo_size())
 
     def test_get_current_branch_fail(self):
@@ -154,7 +154,7 @@ class ParseRepo(unittest.TestCase):
             { 
                 'name': 'foo',
                 'is_clean': True,
-                'size': { 'value': '123', 'unit': 'xyz' },
+                'size': { 'value': 123, 'unit': 'xyz' },
                 'current_branch': { 'local_branch': 'foo', 'remote_branch': 'foo', 'is_sync': True },
                 'remotes': {},
                 'ignore': True,
@@ -162,7 +162,7 @@ class ParseRepo(unittest.TestCase):
             { 
                 'name': 'foo',
                 'is_clean': True,
-                'size': { 'value': '123', 'unit': 'xyz' },
+                'size': { 'value': 123, 'unit': 'xyz' },
                 'current_branch': { 'local_branch': 'foo', 'remote_branch': 'foo', 'is_sync': True },
                 'remotes': {},
             }
@@ -172,7 +172,7 @@ class ParseRepo(unittest.TestCase):
                 name='foo',
                 is_clean=True,
                 size=RepoSize(
-                    value='123',
+                    value=123.0,
                     unit='xyz'
                 ),
                 current_branch=Branch(
@@ -187,7 +187,7 @@ class ParseRepo(unittest.TestCase):
                 name='foo',
                 is_clean=True,
                 size=RepoSize(
-                    value='123',
+                    value=123.0,
                     unit='xyz'
                 ),
                 current_branch=Branch(

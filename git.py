@@ -4,13 +4,13 @@ from typing import Any, Optional
 
 @dataclass
 class RepoSize:
-    value: str
+    value: float
     unit: str
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]):
         return cls(
-            value=data['value'],
+            value=float(data['value']),
             unit=data['unit'],
         )
 
@@ -77,7 +77,7 @@ class Git:
         val_index = key_index + 1
         unit_index = val_index + 1
 
-        return RepoSize(value=output_list[val_index], unit=output_list[unit_index])
+        return RepoSize(value=float(output_list[val_index]), unit=output_list[unit_index])
 
     def get_current_branch(self) -> Optional[Branch]:
         output, code = self.run('git status -sb')
